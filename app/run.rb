@@ -22,19 +22,18 @@ end
 def action
     $prompt.select("watchu wanna do?") do |action|
         action.choice 'start new game', -> {new_game}
-        action.choice 'checkout stats', -> {stats}
+        action.choice 'checkout stats', -> {see_stats}
     end
 end
 
 
 def see_stats
     @current_user 
-    choices = {
-        'High Score' => @current_user.high_score,
-        # 'Top 3 Players' => Game
-        
-    }
-    stat_choice = $prompt.select("Make your selection", choices)
+    $prompt.select("Make your selection") do |stat|
+        stat.choice 'High Score', -> {@current_user.high_score}
+        stat.choice 'Top Players', -> {Game.top_3}
+        stat.choice 'Global Rankng', -> {@current_user.global_rank}
+    end
 end
 
 def select_theme
