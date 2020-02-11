@@ -2,7 +2,7 @@ require_relative '../config/environment'
 
 $prompt = TTY::Prompt.new
 
-# to logout press esc 
+# to escape game return to main menu press esc ?
 # prompt.keypress("Press space or enter to continue", keys: [:space, :return])
 
 
@@ -22,19 +22,9 @@ end
 def action
     $prompt.select("watchu wanna do?") do |action|
         action.choice 'start new game', -> {new_game}
-        action.choice 'checkout stats', -> {stats}
+        action.choice 'checkout stats', -> {see_stats}
+        action.choice 'exit', -> {exit_game}
     end
-end
-
-
-def see_stats
-    @current_user 
-    choices = {
-        'High Score' => @current_user.high_score,
-        # 'Top 3 Players' => Game
-        
-    }
-    stat_choice = $prompt.select("Make your selection", choices)
 end
 
 def select_theme
@@ -43,42 +33,61 @@ def select_theme
 end
 
 def new_game
-    @current_user 
-    @current_theme 
     words = select_theme.words.split(", ")
-    score = 0 
+    game_time = 20
+    typed_words = 0
     now = Time.now
-    counter = 20
     loop do
-        if Time.now < now + counter
+        if Time.now < now + game_time
             loop do 
                 word = words.sample
                 play = $prompt.ask(word)
                 if play == word
-                    score += 1
+                    typed_words += 1
                     break
                 end
             end 
         else 
             break
         end
-    
     end
+    score = typed_words / game_time * 60
     Game.create(score: score, user_id: @current_user.id, theme_id: @current_theme.id)
     puts "TIMES UP!"
-    puts "YOUR SPEED WAS #{score*3} WORDS PER MINUTE"
+    puts "YOUR SPEED WAS #{score} WORDS PER MINUTE"
+    game_next
 end
 
-
-
-def stats
-    puts "stats"
+def see_stats
+    stat_choice = $prompt.select("make your selection") do |stat|
+        stat.choice 'high score', -> {@current_user.high_score}
+    end
+    stat_next
 end
 
+def stat_next
+    $prompt.select("watchu wanna do next?") do |action|
+        action.choice 'go back', -> {see_stats}
+        action.choice 'play game', -> {new_game}
+        action.choice 'exit', -> {exit_game}
+    end
+end
 
+def game_next
+    $prompt.select("watchu wanna do next?") do |action|
+        action.choice 'play again', -> {new_game}
+        action.choice 'check stats', -> {see_stats}
+        action.choice 'exit', -> {exit_game}
+    end
+end
+
+def exit_game
+    $prompt.say("YO DAWG THANKS FOR PLAYING")
+    exit
+end
 
 def play
-    $prompt.say("YO WELCOME TO TYPE WARS")
+    $prompt.say("YO DAWG WELCOME TO TYPE WARS")
     user_login
     action
 end
