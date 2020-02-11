@@ -26,6 +26,17 @@ def action
     end
 end
 
+
+def see_stats
+    @current_user 
+    choices = {
+        'High Score' => @current_user.high_score,
+        # 'Top 3 Players' => Game
+        
+    }
+    stat_choice = $prompt.select("Make your selection", choices)
+end
+
 def select_theme
     theme = $prompt.select("", Theme.all.map{|theme| theme.name})
     @current_theme = Theme.find_by(name: theme)
@@ -59,9 +70,11 @@ def new_game
 end
 
 
+
 def stats
     puts "stats"
 end
+
 
 
 def play
@@ -71,7 +84,6 @@ def play
 end
 
 play
-
 
 
 
