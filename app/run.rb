@@ -69,9 +69,9 @@ end
 
 def see_stats
     $prompt.select("make your selection") do |stat|
-        stat.choice 'your high score', -> {@current_user.print_high_score}
-        stat.choice 'top players', -> {User.high_scores}
-        stat.choice 'global rankng', -> {@current_user.global_rank}
+        stat.choice 'your high score', -> {my_high_score}
+        stat.choice 'top players', -> {User.top_3}
+        stat.choice 'global rankng', -> {my_global_rank}
         stat.choice 'theme plays', -> {Theme.plays}
         stat.choice 'most active users', -> {User.most_active}
     end
@@ -93,8 +93,27 @@ def stat_next
     end
 end
 
+def my_high_score
+    if @current_user.games == []
+        puts "looks like you havent played a game, play!"
+        new_game
+    else
+        @current_user.print_high_score
+    end
+end
+
+def my_global_rank
+    if @current_user.games == []
+        puts "looks like you havent played a game, play you peasant!"
+        new_game
+    else
+        @current_user.global_rank
+    end
+end
+
 def exit_game
     $prompt.say("YO DAWG THANKS FOR PLAYING")
+    User.clean_users
     exit
 end
 
