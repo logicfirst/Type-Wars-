@@ -33,6 +33,7 @@ def select_theme
 end
 
 def new_game
+    
     words = select_theme.words.split(", ")
     game_time = 20
     typed_words = 0
@@ -51,19 +52,28 @@ def new_game
             break
         end
     end
-    score = typed_words / game_time * 60
+    score = (typed_words.to_f / game_time.to_i * 60).to_i
     Game.create(score: score, user_id: @current_user.id, theme_id: @current_theme.id)
     puts "TIMES UP!"
     puts "YOUR SPEED WAS #{score} WORDS PER MINUTE"
     game_next
 end
 
+def game_next
+    $prompt.select("watchu wanna do next?") do |action|
+        action.choice 'play again', -> {new_game}
+        action.choice 'check stats', -> {see_stats}
+        action.choice 'exit', -> {exit_game}
+    end
+end
+
 def see_stats
-    @current_user 
-    $prompt.select("Make your selection") do |stat|
-        stat.choice 'High Score', -> {@current_user.my_high_score}
-        stat.choice 'Top Players', -> {Game.top_3}
-        stat.choice 'Global Rankng', -> {@current_user.global_rank}
+    $prompt.select("make your selection") do |stat|
+        stat.choice 'your high score', -> {@current_user.print_high_score}
+        stat.choice 'top players', -> {User.high_scores}
+        stat.choice 'global rankng', -> {@current_user.global_rank}
+        stat.choice 'theme plays', -> {Theme.plays}
+        stat.choice 'most active users', -> {User.most_active}
     end
     stat_next
 end
@@ -72,14 +82,6 @@ def stat_next
     $prompt.select("watchu wanna do next?") do |action|
         action.choice 'go back', -> {see_stats}
         action.choice 'play game', -> {new_game}
-        action.choice 'exit', -> {exit_game}
-    end
-end
-
-def game_next
-    $prompt.select("watchu wanna do next?") do |action|
-        action.choice 'play again', -> {new_game}
-        action.choice 'check stats', -> {see_stats}
         action.choice 'exit', -> {exit_game}
     end
 end
