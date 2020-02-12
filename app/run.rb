@@ -3,7 +3,6 @@ require_relative '../config/environment'
 $prompt = TTY::Prompt.new
 $font = TTY::Font.new(:starwars)
 $pastel = Pastel.new
-$music_loop = 0
 # to escape game return to main menu press esc ?
 # prompt.keypress("Press space or enter to continue", keys: [:space, :return])
 
@@ -125,7 +124,6 @@ def exit_game
     puts $pastel.yellow($font.write("                                           GOOD"))
     puts $prompt.say("                                                   YO DAWG, THANKS FOR PLAYING!")
     puts $pastel.yellow($font.write("                                  BYE    (^_^)"))
-    $music_loop = 1
     User.clean_users
     pid = fork{ exec 'killall', "afplay" }
     exit
