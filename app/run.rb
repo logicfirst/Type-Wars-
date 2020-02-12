@@ -7,16 +7,16 @@ $pastel = Pastel.new
 # to escape game return to main menu press esc ?
 # prompt.keypress("Press space or enter to continue", keys: [:space, :return])
 
-def exit_on_esc
-    $prompt.on(:keypress) do |event|
-        if event.value == 'esc'
-            $prompt.trigger(exit)
-        end
-    end
-end
+# def exit_on_esc
+#     $prompt.on(:keypress) do |event|
+#         if event.value == 'esc'
+#             $prompt.trigger(exit)
+#         end
+#     end
+# end
 
 def user_login
-    exit_on_esc
+    # exit_on_esc
     user_list = User.all.map {|user| user.username}
     user = $prompt.select($pastel.yellow("Select Username"), ["new_user", user_list.sort_by{|user| user.downcase}].flatten, filter: true)
     if user == "new_user"
@@ -85,10 +85,11 @@ end
 def see_stats
     $prompt.select($pastel.yellow("Make Your Selection")) do |stat|
         stat.choice 'your high score', -> {my_high_score}
-        stat.choice 'top players', -> {User.top_3}
+        stat.choice 'high scores', -> {User.top_3}
         stat.choice 'global rankng', -> {my_global_rank}
         stat.choice 'theme plays', -> {Theme.plays}
-        stat.choice 'most active users', -> {User.most_active}
+        stat.choice 'most active players', -> {User.most_active}
+        stat.choice 'fastest players', -> {User.print_fastest_users}
     end
     stat_next
 end
@@ -124,16 +125,19 @@ def exit_game
     puts $prompt.say("                                                   YO DAWG, THANKS FOR PLAYING!")
     puts $pastel.yellow($font.write("                                  BYE    (^_^)"))
     User.clean_users
+    pid = fork{ exec 'killall', "afplay" }
     exit
 end
 
 def play
+    pid = fork{ exec 'afplay', 'timothyalton/module-one-final-project-guidelines-houston-web-012720/music/star_wars_theme.mp3' }
     puts $pastel.yellow($font.write("                                           TYPE"))
     puts $prompt.say("                                                          YO DAWG, WELCOME!")
     puts $pastel.yellow($font.write("                                       WARS"))
     # exit_on_esc
     user_login
     action
+    # pid = fork{ exec ‘killall’, afplay }
 end
 
 play
