@@ -3,7 +3,7 @@ require_relative '../config/environment'
 $prompt = TTY::Prompt.new
 $font = TTY::Font.new(:starwars)
 $pastel = Pastel.new
-
+$music_loop = 0
 # to escape game return to main menu press esc ?
 # prompt.keypress("Press space or enter to continue", keys: [:space, :return])
 
@@ -14,6 +14,7 @@ $pastel = Pastel.new
 #         end
 #     end
 # end
+
 
 def user_login
     # exit_on_esc
@@ -124,13 +125,14 @@ def exit_game
     puts $pastel.yellow($font.write("                                           GOOD"))
     puts $prompt.say("                                                   YO DAWG, THANKS FOR PLAYING!")
     puts $pastel.yellow($font.write("                                  BYE    (^_^)"))
+    $music_loop = 1
     User.clean_users
     pid = fork{ exec 'killall', "afplay" }
     exit
 end
 
 def play
-    pid = fork{ exec 'afplay', 'timothyalton/module-one-final-project-guidelines-houston-web-012720/music/star_wars_theme.mp3' }
+    pid = fork{ exec 'afplay', 'music/star_wars_theme.mp3' }
     puts $pastel.yellow($font.write("                                           TYPE"))
     puts $prompt.say("                                                          YO DAWG, WELCOME!")
     puts $pastel.yellow($font.write("                                       WARS"))
