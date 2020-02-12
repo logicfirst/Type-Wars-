@@ -29,9 +29,8 @@ class User < ActiveRecord::Base
     end
 
     def global_rank
-        i = rank_array.select {|rank| rank.user_id == self.id}
-      
-        # puts "You are ranked #{@rank.index(i.id)} out of #{@rank.length}."
+        i = rank_array.find {|rank| rank.user_id == self.id}
+        puts "You are ranked #{@rank.index(i)} out of #{@rank.length}."
     end
 end
 

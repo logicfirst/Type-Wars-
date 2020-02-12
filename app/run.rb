@@ -61,7 +61,7 @@ end
 def see_stats
     @current_user 
     $prompt.select("Make your selection") do |stat|
-        stat.choice 'High Score', -> {@current_user.high_score}
+        stat.choice 'High Score', -> {@current_user.my_high_score}
         stat.choice 'Top Players', -> {Game.top_3}
         stat.choice 'Global Rankng', -> {@current_user.global_rank}
     end
