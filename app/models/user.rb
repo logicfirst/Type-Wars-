@@ -1,3 +1,5 @@
+
+
 class User < ActiveRecord::Base
     has_many :games
     has_many :themes, through: :games
@@ -11,21 +13,21 @@ class User < ActiveRecord::Base
         puts "#{self.username} - #{@top_score.score} WPM"
     end
 
-    def self.high_scores
-        cleaned_users = User.all.select {|user| user.games != []}
-        sorted_users = cleaned_users.sort_by {|user| user.high_score.score}
-        high_scores = sorted_users.map {|user| [user.username, user.high_score.score]}
-        puts "1st #{high_scores[0][0]} - #{high_scores[0][1]} WPM"
-        puts "2nd #{high_scores[1][0]} - #{high_scores[1][1]} WPM"
-        puts "3rd #{high_scores[2][0]} - #{high_scores[2][1]} WPM"
-    end
+    # def self.high_scores
+    #     cleaned_users = User.all.select {|user| user.games != []}
+    #     sorted_users = cleaned_users.sort_by {|user| user.high_score.score}
+    #     high_scores = sorted_users.map {|user| [user.username, user.high_score.score]}
+    #     puts "1st #{high_scores[0][0]} - #{high_scores[0][1]} WPM"
+    #     puts "2nd #{high_scores[1][0]} - #{high_scores[1][1]} WPM"
+    #     puts "3rd #{high_scores[2][0]} - #{high_scores[2][1]} WPM"
+    # end =======> using top_3 instead 
 
-    # def top_3
-    #     top = self.order("score DESC").first(3)
-    #     puts "1st #{User.find(user_id=top[0].user_id).username} - #{top[0].score} WPM"
-    #     puts "2nd #{User.find(user_id=top[1].user_id).username} - #{top[1].score} WPM"
-    #     puts "3rd #{User.find(user_id=top[2].user_id).username} - #{top[2].score} WPM"
-    # end
+    def self.top_3
+        top = Game.order("score DESC").first(3)
+        puts "1st #{User.find(user_id=top[0].user_id).username} - #{top[0].score} WPM"
+        puts "2nd #{User.find(user_id=top[1].user_id).username} - #{top[1].score} WPM"
+        puts "3rd #{User.find(user_id=top[2].user_id).username} - #{top[2].score} WPM"
+    end
 
     def rank_array
         rank = User.all.select {|user| user.games != []}
@@ -45,6 +47,7 @@ class User < ActiveRecord::Base
                 user.destroy
             end
         end
+        
     end
 
 
