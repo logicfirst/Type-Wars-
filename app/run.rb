@@ -7,7 +7,6 @@ $pastel = Pastel.new
 # to escape game return to main menu press esc ?
 # prompt.keypress("Press space or enter to continue", keys: [:space, :return])
 
-
 def user_login
     user_list = User.all.map {|user| user.username}
     user = $prompt.select($pastel.yellow("Select Username"), ["new_user", user_list.sort_by{|user| user.downcase}].flatten, filter: true)
@@ -77,10 +76,11 @@ end
 def see_stats
     $prompt.select($pastel.yellow("Make Your Selection")) do |stat|
         stat.choice 'your high score', -> {my_high_score}
-        stat.choice 'top players', -> {User.top_3}
+        stat.choice 'high scores', -> {User.top_3}
         stat.choice 'global rankng', -> {my_global_rank}
         stat.choice 'theme plays', -> {Theme.plays}
-        stat.choice 'most active users', -> {User.most_active}
+        stat.choice 'most active players', -> {User.most_active}
+        stat.choice 'fastest players', -> {User.print_fastest_users}
     end
     stat_next
 end
