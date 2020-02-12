@@ -59,8 +59,11 @@ def new_game
 end
 
 def see_stats
-    stat_choice = $prompt.select("make your selection") do |stat|
-        stat.choice 'high score', -> {@current_user.high_score}
+    @current_user 
+    $prompt.select("Make your selection") do |stat|
+        stat.choice 'High Score', -> {@current_user.high_score}
+        stat.choice 'Top Players', -> {Game.top_3}
+        stat.choice 'Global Rankng', -> {@current_user.global_rank}
     end
     stat_next
 end
