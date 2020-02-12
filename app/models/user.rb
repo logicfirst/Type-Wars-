@@ -33,6 +33,7 @@ class User < ActiveRecord::Base
     def global_rank
         arr = User.fastest_users
         puts "You are ranked #{arr.index(self)+1} out of #{arr.length}."
+
     end
 
     
