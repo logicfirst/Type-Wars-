@@ -78,6 +78,13 @@ def see_stats
     stat_next
 end
 
+def user_high_score
+    if @current_user.games
+        @current_user.print_high_score
+    else 
+        
+end
+
 def stat_next
     $prompt.select("watchu wanna do next?") do |action|
         action.choice 'go back', -> {see_stats}
