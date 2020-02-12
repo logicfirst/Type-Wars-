@@ -1,6 +1,8 @@
 require_relative '../config/environment'
 
 $prompt = TTY::Prompt.new
+$font = TTY::Font.new(:starwars)
+$pastel = Pastel.new
 
 # to escape game return to main menu press esc ?
 # prompt.keypress("Press space or enter to continue", keys: [:space, :return])
@@ -8,7 +10,7 @@ $prompt = TTY::Prompt.new
 
 def user_login
     user_list = User.all.map {|user| user.username}
-    user = $prompt.select("select username", ["new_user", user_list.sort_by{|user| user.downcase}].flatten, filter: true)
+    user = $prompt.select($pastel.yellow("Select Username"), ["new_user", user_list.sort_by{|user| user.downcase}].flatten, filter: true)
     if user == "new_user"
         new_user = $prompt.ask('enter username') do |username|
             username.required true
@@ -20,7 +22,7 @@ def user_login
 end
 
 def action
-    $prompt.select("watchu wanna do?") do |action|
+    $prompt.select($pastel.yellow("Watchu Wanna Do?")) do |action|
         action.choice 'start new game', -> {new_game}
         action.choice 'checkout stats', -> {see_stats}
         action.choice 'exit', -> {exit_game}
@@ -33,7 +35,7 @@ def select_theme
 end
 
 def new_game
-    
+    error = $pastel.red.bold.detach
     words = select_theme.words.split(", ")
     game_time = 20
     typed_words = 0
@@ -42,10 +44,16 @@ def new_game
         if Time.now < now + game_time
             loop do 
                 word = words.sample
-                play = $prompt.ask(word)
-                if play == word
+                play = $prompt.ask(word, timeout: 3)
+                if play == word && Time.now < now + game_time
                     typed_words += 1
                     break
+                elsif Time.now > now + game_time
+                    puts "TIMES UP!!"
+                    break 
+                else 
+                    puts error.('Error!')
+                    break 
                 end
             end 
         else 
@@ -54,7 +62,6 @@ def new_game
     end
     score = (typed_words.to_f / game_time.to_i * 60).to_i
     Game.create(score: score, user_id: @current_user.id, theme_id: @current_theme.id)
-    puts "TIMES UP!"
     puts "YOUR SPEED WAS #{score} WORDS PER MINUTE"
     game_next
 end
@@ -68,7 +75,7 @@ def game_next
 end
 
 def see_stats
-    $prompt.select("make your selection") do |stat|
+    $prompt.select($pastel.yellow("Make Your Selection")) do |stat|
         stat.choice 'your high score', -> {my_high_score}
         stat.choice 'top players', -> {User.top_3}
         stat.choice 'global rankng', -> {my_global_rank}
@@ -79,7 +86,7 @@ def see_stats
 end
 
 def stat_next
-    $prompt.select("watchu wanna do next?") do |action|
+    $prompt.select($pastel.yellow("Watchu Wanna Do Next?")) do |action|
         action.choice 'go back', -> {see_stats}
         action.choice 'play game', -> {new_game}
         action.choice 'exit', -> {exit_game}
@@ -105,13 +112,17 @@ def my_global_rank
 end
 
 def exit_game
-    $prompt.say("YO DAWG THANKS FOR PLAYING")
+    puts $pastel.yellow($font.write("                                           GOOD"))
+    puts $prompt.say("                                                   YO DAWG, THANKS FOR PLAYING!")
+    puts $pastel.yellow($font.write("                                  BYE    (^_^)"))
     User.clean_users
     exit
 end
 
 def play
-    $prompt.say("YO DAWG WELCOME TO TYPE WARS")
+    puts $pastel.yellow($font.write("                                           TYPE"))
+    puts $prompt.say("                                                          YO DAWG, WELCOME!")
+    puts $pastel.yellow($font.write("                                       WARS"))
     user_login
     action
 end

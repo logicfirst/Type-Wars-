@@ -38,7 +38,7 @@ class User < ActiveRecord::Base
 
     def global_rank
         i = rank_array.find {|rank| rank.user_id == self.id}
-        puts "You are ranked #{@rank.index(i)} out of #{@rank.length}."
+        puts "You are ranked #{@rank.index(i) + 1} out of #{@rank.length}."
     end
 
     def self.clean_users
