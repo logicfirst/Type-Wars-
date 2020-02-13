@@ -2,12 +2,17 @@ class User < ActiveRecord::Base
     has_many :games
     has_many :themes, through: :games
 
+    def self.usernames
+        self.all.map {|user| user.username}
+    end
+
     def high_score
         @top_score = self.games.order("score DESC").first
     end
 
     def print_high_score
-        puts "#{self.username} - #{self.high_score.score} WPM"
+        print $pastel.white ("#{self.username} - ")
+        puts $pastel.blue ("#{self.high_score.score} WPM")
     end
 
     def self.fastest_users
@@ -17,22 +22,29 @@ class User < ActiveRecord::Base
 
     def self.print_fastest_users
         users = self.fastest_users
-        puts "1st #{users[0].username} - #{users[0].high_score.score} WPM"
-        puts "2nd #{users[1].username} - #{users[1].high_score.score} WPM"
-        puts "3rd #{users[2].username} - #{users[2].high_score.score} WPM"
+        puts $pastel.blue("1st #{users[0].username} - #{users[0].high_score.score} WPM")
+        puts $pastel.blue("2nd #{users[1].username} - #{users[1].high_score.score} WPM")
+        puts $pastel.blue("3rd #{users[2].username} - #{users[2].high_score.score} WPM")
     end
 
     def self.top_3
         top = (Game.all.sort_by {|game| game.score}).reverse
-        puts "1st #{User.find(top[0].user_id).username} - #{top[0].score} WPM"
-        puts "2nd #{User.find(top[1].user_id).username} - #{top[1].score} WPM"
-        puts "3rd #{User.find(top[2].user_id).username} - #{top[2].score} WPM"
+        print $pastel.white("1st #{User.find(top[0].user_id).username} - ") 
+        puts $pastel.blue("#{top[0].score} WPM")
+
+        print $pastel.white("2nd #{User.find(top[1].user_id).username} - ")
+        puts $pastel.blue("#{top[1].score} WPM")
+
+        print $pastel.white("3rd #{User.find(top[2].user_id).username} - ") 
+        puts $pastel.blue("#{top[2].score} WPM")
+        # puts $pastel.blue("2nd #{User.find(top[1].user_id).username} - #{top[1].score} WPM")
+        # puts $pastel.blue("3rd #{User.find(top[2].user_id).username} - #{top[2].score} WPM")
     end
 
 
     def global_rank
         arr = User.fastest_users
-        puts "You are ranked #{arr.index(self)+1} out of #{arr.length}."
+        puts $pastel.white("You are ranked #{arr.index(self)+1} out of #{arr.length}.")
 
     end
 
@@ -49,9 +61,14 @@ class User < ActiveRecord::Base
 
     def self.most_active
         sorted = (self.all.sort_by {|user| user.games.length}).reverse
-        puts "#{sorted[0].username} - #{sorted[0].games.length} games"
-        puts "#{sorted[1].username} - #{sorted[1].games.length} games"
-        puts "#{sorted[2].username} - #{sorted[2].games.length} games"
+        print $pastel.white("#{sorted[0].username} - ")
+        puts $pastel.blue("#{sorted[0].games.length} games")
+
+        print $pastel.blue("#{sorted[1].username} - ")
+        puts $pastel.white("#{sorted[1].games.length} games")
+
+        print $pastel.white("#{sorted[2].username} - ")
+        puts $pastel.blue("#{sorted[2].games.length} games")
     end
 
 end
