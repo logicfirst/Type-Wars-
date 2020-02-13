@@ -25,6 +25,7 @@ t6 = Theme.create(name: "star wars", words: "Force, Jedi, Troopers, lightsaber, 
 t7 = Theme.create(name: "russian", words: "Dobraye, Spaseeba, Bal'shoye, Neechevo, Gavareetye, Pazhivayesh?, Gavaryoo, Prasteete, Neeploha!")
 
 
+
 Game.create(user_id: u1.id, theme_id: t1.id, score: 20)
 Game.create(user_id: u1.id, theme_id: t2.id, score: 10)
 Game.create(user_id: u1.id, theme_id: t3.id, score: 8)
