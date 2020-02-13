@@ -16,12 +16,12 @@ u5 = User.create(username: "RightButSlow")
 # t6 = Theme.create(name: "Russian", words: "Dobraye ootro, Spaseeba preekrasna!, Bal'shoye spaseeba, Neechevo srashnava, Vi gavareetye, Kak pazhivayesh?, Ya plokha gavaryoo, Prasteete, Neeploha!")
 # t7 = Theme.create(name: "Star Wars", words: "force, Jedi Master, Sithe Lord, lightsaber, Naboo, X-win, Death Star, May the force be with you")
 
-t1 = Theme.create(name: "the office", words: "Bears, Beets, Chili, Jim, Dwight, Angela, Meredith, Stanley, Paper, Beesly, Halpert, Kevin, Andy, Creed, Kelly, Holly, Creed, Sales, Sabre, Pyramid, Scranton, Jello, Astrid")
-t2 = Theme.create(name: "coding", words: "ActiveRecord, initialize, origin, attr_accessor, attr_reader, attr_writer, has_many, belongs_to, \#{speedy}, GitHub, C#, JavaScript, Ruby, mongoDB, SQLite3, binding.pry, Sinatra, React, Redux, NodeJS, AngularJS, end, elsif")
+t1 = Theme.create(name: "the office", words: "Bears, Beets, Chili, Jim, Dwight, Angela, Meredith, Stanley, Paper, Beesly, Halpert, Kevin, Andy, Creed, Kelly, Holly, Creed, Sales, Sabre, Pyramid, Scranton, Jello, Astrid, Pranks, Assistant TO THE Manager")
+t2 = Theme.create(name: "coding", words: "ActiveRecord, initialize, origin, attr_accessor, attr_reader, attr_writer, has_many, belongs_to, \#{speedy}, GitHub, C#, JavaScript, Ruby, mongoDB, SQLite3, binding.pry, Sinatra, React, Redux, NodeJS, AngularJS, end, elsif, HTML, CSS")
 t3 = Theme.create(name: "numbers", words: "34297, 0000000, 2134, 0793, 13946, 387, 12345, 60038, 110981, 20163, 73756, 657, 09821, 7490, 74940, 8754, 86459, 7599, 27037, 47475, 549327, 459245, 47507, 4711118, 84027, 76703") #Array.new(20){rand(1..100000)}
-t4 = Theme.create(name: "runtime terror", words: "Blake, Caleb, Cornelius, Georgii, Gian, Placido, Raul, Jeannie, Somaia, Stephen, Steven, Vidhi, Mitchell, Paul, Vien")
+t4 = Theme.create(name: "runtime terror", words: "Blake, Caleb, Cornelius, Georgii, Gian, Placido, Raul, Jeannie, Somaia, Stephen, Steven, Vidhi, Mitchell, Paul, Vien, Anam")
 t5 = Theme.create(name: "jibberish", words: "Bzidk!!, aoiemm, boqler, panii, Aoogur, ABHP, PLEWNFO, Poubmu, Aiubg, POAAAA, muaopue, baogun, enoyeu, dsfi, oanve, obtmerm, dosueo, anr, adns")
-t6 = Theme.create(name: "star wars", words: "Force, Jedi, Troopers, lightsaber, Naboo, X-win, Leia, Skywalker, Chewbacca, R2-D2, Greedo, Darklighter, Stormtrooper, Kylo")
+t6 = Theme.create(name: "star wars", words: "Force, Jedi, Troopers, lightsaber, Naboo, X-wing, Leia, Skywalker, Chewbacca, R2-D2, Greedo, Darklighter, Stormtrooper, Kylo Ren, Vader, Sidious, Maul, Darth, Sith, Blaster, Yoda, Windu, Anakin, Obi-wan, Kenobi, Tatooine, Coruscant, Lightspeed, Millinium, Falcon, Podracing, Jabba, Han, Solo, Who shot first?, Star, Wars, Padawan, Vibroblade, Shocktrooper, Bounty, Hunter, Padmen, Amadala, Chosen One")
 t7 = Theme.create(name: "russian", words: "Dobraye, Spaseeba, Bal'shoye, Neechevo, Gavareetye, Pazhivayesh?, Gavaryoo, Prasteete, Neeploha!")
 
 
