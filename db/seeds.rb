@@ -39,7 +39,7 @@ Game.create(user_id: u2.id, theme_id: t1.id, score: 9)
 Game.create(user_id: u2.id, theme_id: t2.id, score: 10)
 Game.create(user_id: u2.id, theme_id: t7.id, score: 20)
 Game.create(user_id: u2.id, theme_id: t6.id, score: 16)
-Game.create(user_id: u2.id, theme_id: t5.id, score: 18ß)
+Game.create(user_id: u2.id, theme_id: t5.id, score: 18)
 
 
 
