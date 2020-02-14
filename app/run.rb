@@ -42,9 +42,30 @@ def select_theme
 end
 
 def new_game
+    # if @current_theme.name == "the office"
+    #     pid = fork{ exec 'killall', 'music/star_wars_theme.mp3' }
+    #     pid = fork{ exec 'afplay', 'music/the_office.mp3' }   
+    # end
+    if @current_theme.name == "the office"
+        switch_song
+        play_music('music/the_office.mp3')
+    elsif @current_theme.name == "coding"
+        switch_song
+        play_music('music/tetris.mp3')
+    elsif @current_theme.name == "runtime terror"
+        switch_song
+        play_music('music/halo.mp3')
+    elsif @current_theme.name == "russian"
+        switch_song
+        play_music('music/tetris.mp3')
+    else @current_theme.name == "numbers" || "jibberish"
+        switch_song
+        play_music('music/mario64.mp3')
+
+    end
     error = $pastel.red.bold.detach
     words = @current_theme.words.split(", ")
-    game_time = 5
+    game_time = 20
     typed_words = 0
     now = Time.now
     loop do
@@ -72,6 +93,8 @@ def new_game
     print $pastel.yellow("YOUR SPEED: ") 
     puts $pastel.blue("#{score} WPM")
     puts $pastel.yellow("TOP SPEED FOR #{@current_theme.name.upcase}: #{@current_theme.high_score.score} WPM")
+    switch_song
+    play_music('music/star_wars_theme.mp3')
     game_next
 end
 
@@ -80,6 +103,7 @@ def incorrect
 end
 
 def game_next
+    
     $prompt.select("watchu wanna do next?", filter: true) do |action|
         action.choice 'play again', -> {select_theme}
         action.choice 'check stats', -> {see_stats}
@@ -131,12 +155,26 @@ def exit_game
     puts $prompt.say("                                                   YO DAWG, THANKS FOR PLAYING!")
     puts $pastel.yellow($font.write("                                  BYE    (^_^)"))
     User.clean_users
-    pid = fork{ exec 'killall', "afplay" }
+    # pid = fork{ exec 'killall', "afplay" }
+    stop_music_at_exit
     exit
 end
 
+def play_music(file)
+    @pid = spawn( 'afplay', file )
+end
+
+def switch_song
+    Process.kill "TERM", @pid
+end
+def stop_music_at_exit
+    pid = fork{ system 'killall', 'afplay' }
+    # Process.killall # "TERM", @pid
+end
+
+
 def play
-    pid = fork{ exec 'afplay', 'music/star_wars_theme.mp3' }
+    play_music('music/star_wars_theme.mp3')
     puts $pastel.yellow($font.write("                                           TYPE"))
     puts $prompt.say("                                                          YO DAWG, WELCOME!")
     puts $pastel.yellow($font.write("                                       WARS"))
