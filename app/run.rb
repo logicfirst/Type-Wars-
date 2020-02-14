@@ -42,21 +42,24 @@ def select_theme
 end
 
 def new_game
-    if @current_theme.name == "the office"
+    if @current_theme.name == "The Office"
         switch_song
         play_music('music/the_office.mp3')
-    elsif @current_theme.name == "coding"
+    elsif @current_theme.name == "Coding"
         switch_song
         play_music('music/tetris.mp3')
-    elsif @current_theme.name == "runtime terror"
+    elsif @current_theme.name == "Runtime Terror"
         switch_song
         play_music('music/halo.mp3')
-    elsif @current_theme.name == "russian"
+    elsif @current_theme.name == "Russian"
         switch_song
         play_music('music/handball1.mp3')
-    else @current_theme.name == "numbers" || "jibberish"
+    elsif @current_theme.name == "Numbers" || "Jibberish"
         switch_song
         play_music('music/mario64.mp3')
+    elsif @current_theme.name == "Star Wars"
+        switch_song
+        play_music('music/star_wars_theme.mp3')
     end
     error = $pastel.red.bold.detach
     words = @current_theme.words.split(", ")
@@ -93,9 +96,6 @@ def new_game
     game_next
 end
 
-def incorrect
-    "Slow down!, Try again!, Try again bud!, Whoops!, Error!, Slow down bud!, Use the force next time!, You type like a strom trooper shoots!, Wrong!, ".split(", ").sample
-end
 
 def game_next
     $prompt.select("watchu wanna do next?", filter: true) do |action|
@@ -176,7 +176,7 @@ def play
     action
 end
 
-# play
+play
 
 
 
