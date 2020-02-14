@@ -4,14 +4,6 @@ $prompt = TTY::Prompt.new
 $font = TTY::Font.new(:starwars)
 $pastel = Pastel.new
 
-# def exit_on_esc
-#     $prompt.on(:keypress) do |event|
-#         if event.value == 'esc'
-#             $prompt.trigger(exit)
-#         end
-#     end
-# end
-
 
 def user_login
     # exit_on_esc
@@ -103,10 +95,6 @@ def new_game
     game_next
 end
 
-<<<<<<< HEAD
-=======
-
->>>>>>> 0e1734efe01708137b81926d758ac74481eccb09
 def game_next
     $prompt.select("watchu wanna do next?", filter: true) do |action|
         action.choice 'play again', -> {select_theme}
