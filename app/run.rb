@@ -42,25 +42,7 @@ def select_theme
 end
 
 def new_game
-    if @current_theme.name == "The Office"
-        switch_song
-        play_music('music/the_office.mp3')
-    elsif @current_theme.name == "Coding"
-        switch_song
-        play_music('music/tetris.mp3')
-    elsif @current_theme.name == "Runtime Terror"
-        switch_song
-        play_music('music/halo.mp3')
-    elsif @current_theme.name == "Russian"
-        switch_song
-        play_music('music/handball1.mp3')
-    elsif @current_theme.name == "Numbers" || "Jibberish"
-        switch_song
-        play_music('music/mario64.mp3')
-    elsif @current_theme.name == "Star Wars"
-        switch_song
-        play_music('music/star_wars_theme.mp3')
-    end
+    play_theme_music
     error = $pastel.red.bold.detach
     words = @current_theme.words.split(", ")
     game_time = 20
@@ -96,6 +78,34 @@ def new_game
     game_next
 end
 
+def play_theme_music
+    if @current_theme.name == "The Office"
+        switch_song
+        play_music('music/the_office.mp3')
+    elsif @current_theme.name == "Coding"
+        switch_song
+        play_music('music/tetris.mp3')
+    elsif @current_theme.name == "Runtime Terror"
+        switch_song
+        play_music('music/halo.mp3')
+    elsif @current_theme.name == "Russian"
+        switch_song
+        play_music('music/handball1.mp3')
+    elsif @current_theme.name == "Numbers"
+        switch_song
+        play_music('music/mario64.mp3')
+    elsif @current_theme.name == "Jibberish"
+        switch_song
+        play_music('music/mario64.mp3')
+    elsif @current_theme.name == "Star Wars"
+        switch_song
+        play_music('music/dual_of_fates.mp3')
+    end
+end
+
+def incorrect
+    "Slow down!, Try again!, Try again bud!, Whoops!, Error!, Slow down bud!, Use the force next time!, You type like a strom trooper shoots!, Wrong!, ".split(", ").sample
+end
 
 def game_next
     $prompt.select("watchu wanna do next?", filter: true) do |action|
