@@ -47,10 +47,6 @@ def select_theme
 end
 
 def new_game
-    # if @current_theme.name == "the office"
-    #     pid = fork{ exec 'killall', 'music/star_wars_theme.mp3' }
-    #     pid = fork{ exec 'afplay', 'music/the_office.mp3' }   
-    # end
     if @current_theme.name == "the office"
         switch_song
         play_music('music/the_office.mp3')
@@ -62,11 +58,10 @@ def new_game
         play_music('music/halo.mp3')
     elsif @current_theme.name == "russian"
         switch_song
-        play_music('music/tetris.mp3')
+        play_music('music/handball1.mp3')
     else @current_theme.name == "numbers" || "jibberish"
         switch_song
         play_music('music/mario64.mp3')
-
     end
     error = $pastel.red.bold.detach
     words = @current_theme.words.split(", ")
@@ -106,7 +101,6 @@ def new_game
 end
 
 def game_next
-    
     $prompt.select("watchu wanna do next?", filter: true) do |action|
         action.choice 'play again', -> {select_theme}
         action.choice 'check stats', -> {see_stats}
@@ -170,9 +164,9 @@ end
 def switch_song
     Process.kill "TERM", @pid
 end
+
 def stop_music_at_exit
     pid = fork{ system 'killall', 'afplay' }
-    # Process.killall # "TERM", @pid
 end
 
 
