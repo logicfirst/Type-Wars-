@@ -4,28 +4,22 @@ $prompt = TTY::Prompt.new
 $font = TTY::Font.new(:starwars)
 $pastel = Pastel.new
 
-# def exit_on_esc
-#     $prompt.on(:keypress) do |event|
-#         if event.value == 'esc'
-#             $prompt.trigger(exit)
-#         end
-#     end
-# end
-
-
 def user_login
-    # exit_on_esc
-    user_list = User.all.map {|user| user.username}
-    user = $prompt.select($pastel.yellow("Select Username"), ["new_user", user_list.sort_by{|user| user.downcase}].flatten, filter: true)
+    user = $prompt.select($pastel.yellow("Select Username"), ["new_user", users_alpha_order].flatten, filter: true)
     if user == "new_user"
-        new_user = $prompt.ask('enter username') do |username|
+        user = $prompt.ask('enter username') do |username|
             username.required true
-            username.validate {|name| User.usernames.include? name}
-            username.validate /\w/
+            username.messages[:required?] = 'Enter a username to continue...                      '
+            username.validate {|input| User.usernames.exclude? input}
+            username.messages[:valid?] = 'Username taken, please try again...                   '
         end
-        user = User.create(username: new_user).username
     end
-    @current_user = User.find_by(username: user)
+    @current_user = User.find_or_create_by(username: user)
+end
+
+def users_alpha_order
+    user_list = User.pluck(:username)
+    user_list.sort_by{|user| user.downcase}
 end
 
 def action
@@ -37,7 +31,8 @@ def action
 end
 
 def select_theme
-    theme = $prompt.select($pastel.yellow("pick a theme"), [$pastel.blue("Go Back"), Theme.all.map{|theme| theme.name}].flatten, filter: true)
+    # theme = $prompt.select($pastel.yellow("pick a theme"), [$pastel.blue("Go Back"), Theme.all.map{|theme| theme.name}].flatten, filter: true)
+    theme = $prompt.select($pastel.yellow("pick a theme"), [$pastel.blue("Go Back"), Theme.pluck(:name)].flatten, filter: true)
     if theme == "\e[34mGo Back\e[0m"
         action
     else
@@ -70,9 +65,8 @@ def new_game
     end
     error = $pastel.red.bold.detach
     words = @current_theme.words.split(", ")
-    game_time = 30
+    game_time = 20
     typed_words = 0
-    # typed_words = []
     now = Time.now
     loop do
         if Time.now < now + game_time
@@ -86,7 +80,7 @@ def new_game
                     puts $pastel.yellow("TIMES UP!!")
                     break 
                 else 
-                    puts error.('Error!')
+                    puts error.(incorrect)
                     break 
                 end
             end 
@@ -94,8 +88,7 @@ def new_game
             break
         end
     end
-    # score = (typed_words.join(" ").split(" ").count.to_f / game_time.to_i * 60).to_i
-    score = (typed_words.to_f / game_time.to_f * 60).to_i
+    score = (typed_words.to_f / game_time.to_i * 60).to_i
     Game.create(score: score, user_id: @current_user.id, theme_id: @current_theme.id)
     print $pastel.yellow("YOUR SPEED: ") 
     puts $pastel.blue("#{score} WPM")
@@ -103,6 +96,10 @@ def new_game
     switch_song
     play_music('music/star_wars_theme.mp3')
     game_next
+end
+
+def incorrect
+    "Slow down!, Try again!, Try again bud!, Whoops!, Error!, Slow down bud!, Use the force next time!, You type like a strom trooper shoots!, Wrong!, ".split(", ").sample
 end
 
 def game_next
@@ -138,7 +135,7 @@ end
 def my_high_score
     if @current_user.games == []
         puts $pastel.blue("looks like you havent played a game, play!")
-        new_game
+        select_theme
     else
         @current_user.print_high_score
     end
@@ -147,7 +144,7 @@ end
 def my_global_rank
     if @current_user.games == []
         puts $pastel.blue("looks like you havent played a game, play you peasant!")
-        new_game
+        select_theme
     else
         @current_user.global_rank
     end
@@ -185,7 +182,7 @@ def play
     action
 end
 
-play
+# play
 
 
 
